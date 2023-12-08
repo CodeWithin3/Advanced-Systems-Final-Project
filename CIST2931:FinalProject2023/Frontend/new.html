@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account</title>
+    <style>
+        /* Basic CSS for styling - you can modify this as needed */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #EDEADE;
+            background-image: url('pexels-sinitta-leunen-3791008.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center; /* Center the background image */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .signup-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+		
+		        .error-message {
+            color: red;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+		        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="signup-container">
+        <h2>Create Account</h2>
+        <form action="/signup" method="POST">
+            <input style="width: 380px;" type="text" name="username" placeholder="Username" required>
+            <input style="width: 380px;" type="password" name="password" placeholder="Password" required>
+			<input style="width: 380px;" type="text" name="Email" placeholder="Email" required>
+			<input style="width: 380px;" type="text" name="Phone" placeholder="Phone Number" required>
+            <input type="submit" value="Create Account">
+			<a href="login.html" class="button">Login</a>
+        </form>
+    </div>
+	
+</body>
+
+</html>

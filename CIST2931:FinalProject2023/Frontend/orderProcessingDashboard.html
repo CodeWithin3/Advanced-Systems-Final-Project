@@ -1,0 +1,182 @@
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page import="java.sql.*" %>
+<%@ page import="cartPackage.databaseConnection" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Processing Dashboard</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #f2f2f2;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            margin: 0 10px;
+            color: #333;
+            transition: color 0.3s ease; /* Transition effect for color change */
+        }
+
+        nav a:hover {
+            color: #1b9cbf; /* Color change on hover */
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Order Processing Dashboard</h1>
+    </header>
+
+    <nav>
+        <a href="orderProcessingLogin.jsp">Back to login page</a>
+        <a href="orderProcessingRegistration.jsp">Create new order processing account</a>
+        <a href="../shoes/insertShoes.jsp">Upload shoe to website</a>
+    </nav>
+<main>
+    <h2>List of Orders</h2>
+   
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer Email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Street Address</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Postal Code</th>
+                <th>Country</th>
+                <th>Phone Number</th>
+                <th>Order Date</th>
+                <th>Quantity</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% 
+                try {
+                    Connection connection = databaseConnection.connect(); // Update with database connection logic
+
+                    // Fetching orders and quantity from the database
+                    String query = "SELECT o.*, c.quantity " +
+                                   "FROM orders o " +
+                                   "LEFT JOIN user_cart c ON o.id = c.user_id";
+                    try (Statement statement = connection.createStatement();
+                         ResultSet resultSet = statement.executeQuery(query)) {
+                        
+                        while (resultSet.next()) {
+                            int orderId = resultSet.getInt("id");
+                            String userEmail = resultSet.getString("user_email");
+                            String userFName = resultSet.getString("first_name");
+                            String userLName = resultSet.getString("last_name");
+                            String street_address = resultSet.getString("street_address");
+                            String city = resultSet.getString("city");
+                            String state = resultSet.getString("state");
+                            String postal_code = resultSet.getString("postal_code");
+                            String country = resultSet.getString("country");
+                            String user_mobile = resultSet.getString("user_mobile");
+                            String order_date = resultSet.getString("order_date");
+                            int quantity = resultSet.getInt("quantity");
+                            double totalAmount = resultSet.getDouble("total_amount");                       
+                            String status = resultSet.getString("status");
+            %>
+            <tr>
+                <td><%= orderId %></td>
+                <td><%= userEmail %></td>
+                <td><%= userFName %></td>
+                <td><%= userLName %></td>
+                <td><%= street_address %></td>
+                <td><%= city %></td>
+                <td><%= state %></td>
+                <td><%= postal_code %></td>
+                <td><%= country %></td>
+                <td><%= user_mobile %></td>
+                <td><%= order_date %></td>
+                <td><%= quantity %></td>
+                <td>$<%= totalAmount %></td>           
+                <td><%= status %></td>
+                <td>
+                    <form action="/estore/updateOrderStatusServlet" method="post">
+                        <input type="hidden" name="orderId" value="<%= orderId %>">
+                        <select name="newStatus">
+                            <option value="readyToShip">Ready to Ship</option>
+                            <option value="readyForPickup">Ready for Pickup</option>
+                            <!-- Add more options as needed -->
+                        </select>
+                        <input type="submit" value="Update Status">
+                    </form>
+                </td>
+            </tr>
+            <%
+                        }
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            %>
+        </tbody>
+    </table>
+	</main>
+    <footer>
+        <p>&copy;2023- Order Processing Dashboard. All rights reserved.</p>
+    </footer>
+</body>
+</html>
